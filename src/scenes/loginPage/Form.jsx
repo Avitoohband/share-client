@@ -55,7 +55,9 @@ const Form = () => {
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
 
-  const handleFormSubmit = async (values, onSubmitProps) => {};
+  const handleFormSubmit = async (values, onSubmitProps) => {
+    // 3:21:40 Form Submit Logic
+  };
 
   return (
     <Formik
@@ -153,22 +155,90 @@ const Form = () => {
                   >
                     {({ getRootProps, getInputProps }) => {
                       <Box
-                        {...getRootProps}
+                        {...getRootProps()}
                         border={`2px dashed ${palette.primary.main}`}
                         p="1rem"
                         sx={{
                           "&:hover": { cursor: "pointer" },
                         }}
                       >
-                        {/* add input tag  3:14:40*/}
-
-                        
+                        <input {...getInputProps()} />
+                        {!values.picture ? (
+                          <p>Add Picture Here</p>
+                        ) : (
+                          <FlexBetween>
+                            <Typography>{values.picutre.name}</Typography>
+                            <EditOutlinedIcon />
+                          </FlexBetween>
+                        )}
                       </Box>;
                     }}
                   </Dropzone>
                 </Box>
               </>
             )}
+            <TextField
+              label="Email"
+              onBlue={handleBlur}
+              onChange={handleChange}
+              values={values.email}
+              name="email"
+              errors={Boolean(touched.email) && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
+              sx={{
+                gridCoulumn: "span 4",
+              }}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              onBlue={handleBlur}
+              onChange={handleChange}
+              values={values.password}
+              name="password"
+              errors={Boolean(touched.password) && Boolean(errors.password)}
+              helperText={touched.password && errors.password}
+              sx={{
+                gridCoulumn: "span 4",
+              }}
+            />
+          </Box>
+
+          {/* BUTTONS */}
+          <Box>
+            <Button
+              fullWidth
+              type="submit"
+              sc={{
+                m: "2rem 0",
+                p: "1rem",
+                backgroundColor: palette.primary.main,
+                color: palette.background.alt,
+                "&:hover": { color: palette.primary.main },
+              }}
+            >
+              {isLogin ? "LOGIN" : "REGISTER"}
+            </Button>
+            <Typography
+              onClick={() => {
+                setPageType((prevType) => {
+                  resetForm();
+                  return prevType === "login" ? "register" : "login";
+                });
+              }}
+              sx={{
+                textDecoration: "underline",
+                color: palette.primary.main,
+                "&:hover": {
+                  cursor: "pointer",
+                  color: palette.primary.light,
+                },
+              }}
+            >
+              {isLogin
+                ? "Don't have an account? Sign Up here."
+                : "Already have an account? Login here."}
+            </Typography>
           </Box>
         </form>
       )}
