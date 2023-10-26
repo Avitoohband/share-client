@@ -9,7 +9,6 @@ import {
   FormControl,
   useTheme,
   useMediaQuery,
-  Input,
 } from "@mui/material";
 import {
   Search,
@@ -23,7 +22,7 @@ import {
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import state, { setMode, setLogout } from "state";
+import { setMode, setLogout } from "state";
 import FlexBetween from "components/FlexBetween";
 
 const Navbar = () => {
@@ -40,8 +39,7 @@ const Navbar = () => {
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
-  const fullName = `Avi Tuchband`;
-  // const fullName = `${user.firstName} ${user.lastName}`;
+  const fullName = `${user.firstName} ${user.lastName}`;
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -57,7 +55,9 @@ const Navbar = () => {
               cursor: "pointer",
             },
           }}
-        >Share</Typography>
+        >
+          Share
+        </Typography>
         {isNonMobileScreens && (
           <FlexBetween
             backgroundColor={neutralLight}
@@ -86,7 +86,7 @@ const Navbar = () => {
           <Message sx={{ fontSize: "25px" }} />
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
-          <FormControl variant="stantard" value={fullName}>
+          <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
               sx={{
@@ -160,7 +160,7 @@ const Navbar = () => {
             <Message sx={{ fontSize: "25px" }} />
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
-            <FormControl variant="stantard" value={fullName}>
+            <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}
                 sx={{
