@@ -25,13 +25,12 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost, setPosts } from "state";
 
-const MyPostWidget = () => {
+const MyPostWidget = ({ userId, picturePath }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
   const [postContent, setPostContent] = useState("");
-  const { palette } = useTheme();
-  const { _id: id } = useSelector((state) => state.user);
+  const { palette } = useTheme();  
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
@@ -39,7 +38,7 @@ const MyPostWidget = () => {
 
   const handlePost = async () => {
     const formData = new FormData();
-    formData.append("userId", id);
+    formData.append("userId", userId);
     formData.append("description", postContent);
     if (image) {
       formData.append("picture", image);
@@ -82,9 +81,92 @@ const MyPostWidget = () => {
           mt="1rem"
           p="1rem"
         >
-          {/* Dropzone 04:17 */}
+          <Dropzone
+            acceptedFiles=".jpg,.jpeg,.png"
+            multiple={false}
+            onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <FlexBetween>
+                <Box
+                  {...getRootProps()}
+                  border={`2px dashed ${palette.primary.main}`}
+                  p="1rem"
+                  width="100%"
+                  sx={{ "&:hover": { cursor: "pointer" } }}
+                >
+                  <input {...getInputProps()} />
+                  {!image ? (
+                    <p>Add Image Here</p>
+                  ) : (
+                    <FlexBetween>
+                      <Typography>{image.name}</Typography>
+                      <EditOutlined />
+                    </FlexBetween>
+                  )}
+                </Box>
+                {image && (
+                  <IconButton
+                    onClick={() => setImage(null)}
+                    sx={{ width: "15%" }}
+                  >
+                    <DeleteOutlined />
+                  </IconButton>
+                )}
+              </FlexBetween>
+            )}
+          </Dropzone>{" "}
         </Box>
       )}
+      <Divider sx={{ margin: "1.25rem 0" }} />
+
+      <FlexBetween>
+        <FlexBetween gap="o.25rem" onClick={() => setIsImage((prev) => !prev)}>
+          <ImageOutlined sx={{ color: mediumMain }} />
+          <Typography
+            color={mediumMain}
+            sx={{
+              "&:hover": { cursor: "pointer", color: medium },
+            }}
+          >
+            Image
+          </Typography>
+        </FlexBetween>
+        {isNonMobileScreens ? (
+          <>
+            <FlexBetween gap="0.25rem">
+              <GiftBoxOutlined sx={{ color: mediumMain }} />
+              <Typography color={mediumMain}>Clip</Typography>
+            </FlexBetween>
+
+            <FlexBetween gap="0.25rem">
+              <AttachFileOutlined sx={{ color: mediumMain }} />
+              <Typography color={mediumMain}>Attachment</Typography>
+            </FlexBetween>
+
+            <FlexBetween gap="0.25rem">
+              <MicOutlined sx={{ color: mediumMain }} />
+              <Typography color={mediumMain}>Audio</Typography>
+            </FlexBetween>
+          </>
+        ) : (
+          <FlexBetween gap="0.25rem">
+            <MoreHorizOutlined sx={{ color: mediumMain }} />
+          </FlexBetween>
+        )}
+
+        <Button
+          disabled={!postContent}
+          onClick={handlePost}
+          sx={{
+            color: palette.background.alt,
+            backgroundColor: palette.primary.main,
+            broderRadius: "3rem",
+          }}
+        >
+          POST
+        </Button>
+      </FlexBetween>
     </WidgetWrapper>
   );
 };
