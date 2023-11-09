@@ -2,7 +2,7 @@ import {
   EditOutlined,
   DeleteOutlined,
   AttachFileOutlined,
-  GiftBoxOutlined,
+  GifBoxOutlined,
   ImageOutlined,
   MicOutlined,
   MoreHorizOutlined,
@@ -52,6 +52,7 @@ const MyPostWidget = ({ userId, picturePath }) => {
       },
       body: formData,
     });
+
     const posts = await response.json();
     dispatch(setPosts({ posts }));
     setImage(null);
@@ -135,7 +136,7 @@ const MyPostWidget = ({ userId, picturePath }) => {
         {isNonMobileScreens ? (
           <>
             <FlexBetween gap="0.25rem">
-              <GiftBoxOutlined sx={{ color: mediumMain }} />
+              <GifBoxOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Clip</Typography>
             </FlexBetween>
 
